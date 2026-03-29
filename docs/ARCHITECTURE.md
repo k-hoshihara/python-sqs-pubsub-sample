@@ -11,21 +11,27 @@ graph LR
 
 ## ディレクトリ構成
 
+外側のディレクトリはビルドコンテキスト（Dockerfile, pyproject.toml）、内側の同名ディレクトリが Python パッケージ本体です。
+これは src layout の標準的な構成であり、`pip install .` 時にパッケージとして正しく認識されるために必要です。
+
 ```
 src/
-├── publisher/
-│   ├── publisher/
+├── publisher/              # ビルドコンテキスト
+│   ├── publisher/          # Python パッケージ
+│   │   ├── config/         # インフラの初期化・設定
 │   │   ├── domain/
-│   │   │   └── model/
-│   │   │       └── message_definition/
+│   │   │   ├── model/
+│   │   │   │   └── message_definition/
+│   │   │   └── service/
 │   │   └── repository/
 │   ├── Dockerfile
 │   └── pyproject.toml
 └── subscriber/
     ├── subscriber/
     │   ├── domain/
-    │   │   └── model/
-    │   │       └── message_definition/
+    │   │   ├── model/
+    │   │   │   └── message_definition/
+    │   │   └── service/
     │   └── repository/
     ├── Dockerfile
     └── pyproject.toml

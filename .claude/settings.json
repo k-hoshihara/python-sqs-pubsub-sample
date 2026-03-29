@@ -10,7 +10,7 @@
           },
           {
             "type": "command",
-            "command": "jq -r '.tool_input.file_path' | xargs -I{} sh -c 'test -s \"{}\" && [ \"$(tail -c 1 \"{}\" | xxd -p)\" != \"0a\" ] && printf \"\\n\" >> \"{}\"'"
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/ensure-trailing-newline.sh"
           },
           {
             "type": "agent",
