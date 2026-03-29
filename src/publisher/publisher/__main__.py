@@ -4,7 +4,6 @@ import os
 from datetime import datetime, timezone
 
 import boto3
-
 from publisher.domain.model.message_definition.application_message import ApplicationMessage
 from publisher.repository.sqs_repository import SqsRepository
 
