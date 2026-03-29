@@ -11,6 +11,12 @@
           {
             "type": "command",
             "command": "jq -r '.tool_input.file_path' | xargs -I{} sh -c 'test -s \"{}\" && [ \"$(tail -c 1 \"{}\" | xxd -p)\" != \"0a\" ] && printf \"\\n\" >> \"{}\"'"
+          },
+          {
+            "type": "agent",
+            "prompt": "変更されたファイルが pyproject.toml, requirements.txt, Dockerfile, compose.yaml のいずれかであれば、依存バージョンが最新安定版か確認してください。Pythonパッケージは PyPI、Docker イメージは公式レジストリで確認し、古いバージョンがあれば報告してください。それ以外のファイルであれば何もせず終了してください。$ARGUMENTS",
+            "timeout": 120,
+            "statusMessage": "依存バージョンをチェック中..."
           }
         ]
       }

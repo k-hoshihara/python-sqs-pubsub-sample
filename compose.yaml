@@ -1,0 +1,55 @@
+services:
+  localstack:
+    image: localstack/localstack:4.13.0
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=sqs
+
+  redis:
+    image: redis:8.6
+    ports:
+      - "6379:6379"
+
+  publisher:
+    build: ./src/publisher
+    command: ["python", "__main__.py"]
+    depends_on:
+      localstack:
+        condition: service_healthy
+    environment:
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - AWS_DEFAULT_REGION=ap-northeast-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - SQS_QUEUE_NAME=sample-queue
+
+  subscriber:
+    build: ./src/subscriber
+    command: ["python", "__main__.py"]
+    depends_on:
+      localstack:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - AWS_DEFAULT_REGION=ap-northeast-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - SQS_QUEUE_NAME=sample-queue
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+  integration-test:
+    build: ./test/integration
+    environment:
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - AWS_DEFAULT_REGION=ap-northeast-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - SQS_QUEUE_NAME=sample-queue
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    profiles:
+      - test
