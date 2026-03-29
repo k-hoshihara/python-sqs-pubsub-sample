@@ -5,6 +5,11 @@ services:
       - "4566:4566"
     environment:
       - SERVICES=sqs
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:4566/_localstack/health || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   redis:
     image: redis:8.6
