@@ -35,3 +35,4 @@ docker compose --profile test down
 - [検証シナリオ・テスト仕様](docs/TEST_SCENARIO.md)
 - [テスト戦略 (ローカル / CI)](docs/TEST_STRATEGY.md)
 - [ライブラリ選定](docs/LIBRARY_SELECTION.md)
+- [リトライポリシー](docs/RETRY_POLICY.md)
