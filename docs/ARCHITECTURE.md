@@ -18,6 +18,7 @@ graph LR
 src/
 ├── publisher/              # ビルドコンテキスト
 │   ├── publisher/          # Python パッケージ
+│   │   ├── config/         # インフラの初期化・設定
 │   │   ├── domain/
 │   │   │   ├── model/
 │   │   │   │   └── message_definition/
