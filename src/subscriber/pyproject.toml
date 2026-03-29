@@ -1,0 +1,15 @@
+[project]
+name = "subscriber"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "boto3>=1.42,<2",
+    "redis>=7.1,<8",
+]
+
+[tool.setuptools.packages.find]
+include = ["subscriber*"]
+
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"

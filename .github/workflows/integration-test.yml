@@ -1,0 +1,32 @@
+name: Integration Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  integration-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Start services
+        run: docker compose -f compose.yaml -f compose.ci.yaml up --build -d
+
+      - name: Wait for services to be ready
+        run: |
+          echo "Waiting for publisher to finish and subscriber to process..."
+          sleep 10
+
+      - name: Run integration test
+        run: docker compose -f compose.yaml -f compose.ci.yaml --profile test run --rm integration-test
+
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose -f compose.yaml -f compose.ci.yaml logs
+
+      - name: Cleanup
+        if: always()
+        run: docker compose -f compose.yaml -f compose.ci.yaml --profile test down

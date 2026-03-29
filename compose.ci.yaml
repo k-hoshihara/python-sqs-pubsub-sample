@@ -1,0 +1,38 @@
+services:
+  localstack:
+    image: softwaremill/elasticmq-native:1.6.16
+    ports: !reset []
+    environment: {}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://localhost:9324/?Action=ListQueues || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  publisher:
+    environment:
+      - AWS_ENDPOINT_URL=http://localstack:9324
+      - AWS_DEFAULT_REGION=ap-northeast-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - SQS_QUEUE_NAME=sample-queue
+
+  subscriber:
+    environment:
+      - AWS_ENDPOINT_URL=http://localstack:9324
+      - AWS_DEFAULT_REGION=ap-northeast-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - SQS_QUEUE_NAME=sample-queue
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+  integration-test:
+    environment:
+      - AWS_ENDPOINT_URL=http://localstack:9324
+      - AWS_DEFAULT_REGION=ap-northeast-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - SQS_QUEUE_NAME=sample-queue
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
