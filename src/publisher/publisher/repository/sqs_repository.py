@@ -2,7 +2,7 @@ import json
 import os
 
 import boto3
-from domain.model.message_definition.application_message import ApplicationMessage
+from publisher.domain.model.message_definition.application_message import ApplicationMessage
 
 
 class SqsRepository:

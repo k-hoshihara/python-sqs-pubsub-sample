@@ -14,15 +14,21 @@ graph LR
 ```
 src/
 ├── publisher/
-│   ├── domain/
-│   │   └── model/
-│   │       └── message_definition/
-│   └── repository/
+│   ├── publisher/
+│   │   ├── domain/
+│   │   │   └── model/
+│   │   │       └── message_definition/
+│   │   └── repository/
+│   ├── Dockerfile
+│   └── pyproject.toml
 └── subscriber/
-    ├── domain/
-    │   └── model/
-    │       └── message_definition/
-    └── repository/
+    ├── subscriber/
+    │   ├── domain/
+    │   │   └── model/
+    │   │       └── message_definition/
+    │   └── repository/
+    ├── Dockerfile
+    └── pyproject.toml
 ```
 
 ## 設計方針
@@ -30,6 +36,9 @@ src/
 - publisher と subscriber は独立したパッケージとして実装する
 - 非同期に動作する別プロセスであり、共通コードは持たない
 - それぞれ個別にビルド・デプロイ可能とする
+- Python パッケージの標準的な作法に従い、`pip install .` でインストール可能な構成とする
+- Python のパッケージ構成には大きく src layout と flat layout があるが、本プロジェクトでは [Python 公式が推奨する src layout](https://packaging.python.org/ja/latest/discussions/src-layout-vs-flat-layout/) を採用している
+  - 参考: [Pythonのsrc layoutとflat layout](https://nsakki55.hatenablog.com/entry/2024/10/28/095509)
 
 ## インフラ構成
 

@@ -1,9 +1,9 @@
 import json
 import logging
 
-from domain.model.message_definition.application_message import ApplicationMessage
-from repository.redis_repository import RedisRepository
-from repository.sqs_repository import SqsRepository
+from subscriber.domain.model.message_definition.application_message import ApplicationMessage
+from subscriber.repository.redis_repository import RedisRepository
+from subscriber.repository.sqs_repository import SqsRepository
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

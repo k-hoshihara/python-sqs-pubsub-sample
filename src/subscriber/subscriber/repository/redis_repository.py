@@ -2,7 +2,7 @@ import json
 import os
 
 import redis
-from domain.model.message_definition.application_message import ApplicationMessage
+from subscriber.domain.model.message_definition.application_message import ApplicationMessage
 
 
 class RedisRepository:
