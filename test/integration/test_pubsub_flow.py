@@ -30,6 +30,20 @@ def _wait_for_redis_key(client, key, timeout=30):
     return None
 
 
+def _wait_for_empty_queue(client, queue_url, timeout=30):
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        response = client.receive_message(
+            QueueUrl=queue_url,
+            MaxNumberOfMessages=1,
+            WaitTimeSeconds=1,
+        )
+        if not response.get("Messages"):
+            return True
+        time.sleep(1)
+    return False
+
+
 def test_publisher_sends_message_and_subscriber_saves_to_redis():
     redis_client = _redis_client()
 
@@ -42,3 +56,12 @@ def test_publisher_sends_message_and_subscriber_saves_to_redis():
     assert data["application_number"] == application_number
     assert data["application_type"] == "new"
     assert "applied_at" in data
+
+
+def test_processed_message_is_deleted_from_sqs():
+    sqs_client = _sqs_client()
+    queue_url = sqs_client.get_queue_url(QueueName=SQS_QUEUE_NAME)["QueueUrl"]
+
+    is_empty = _wait_for_empty_queue(sqs_client, queue_url)
+
+    assert is_empty, "SQS queue still has messages after processing"
