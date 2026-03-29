@@ -1,8 +1,7 @@
 services:
   localstack:
     image: softwaremill/elasticmq-native:1.6.16
-    ports:
-      - "4566:9324"
+    ports: !reset []
     environment: {}
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O /dev/null http://localhost:9324/?Action=ListQueues || exit 1"]
