@@ -1,0 +1,19 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path' | xargs -I{} sh -c 'case \"{}\" in *.py) uvx ruff format \"{}\" && uvx ruff check --fix \"{}\" ;; esac'"
+          },
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path' | xargs -I{} sh -c 'test -s \"{}\" && [ \"$(tail -c 1 \"{}\" | xxd -p)\" != \"0a\" ] && printf \"\\n\" >> \"{}\"'"
+          }
+        ]
+      }
+    ]
+  }
+}
